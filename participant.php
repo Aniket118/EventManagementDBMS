@@ -4,7 +4,11 @@ require('db.php');
 $stid1 = oci_parse($conn, "SELECT * FROM participant NATURAL JOIN events NATURAL JOIN event_type");
 oci_execute($stid1);
 $npart= oci_fetch_all($stid1, $part);
-
+ if(isset($_POST['delete'])){
+     $stid= oci_parse (sprintf("delete from participant where email = '%s'",$_POST['email']));
+     oci_execute($stid);
+     header("Location:participant.php");
+ }
 ?>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link href="bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -46,6 +50,14 @@ $npart= oci_fetch_all($stid1, $part);
     <?php } ?>
     </tbody>
   </table>
+      <form name = "delete" method="POST">
+      <center>
+      <input type="email" name="email">
+          
+          <button name="delete" type="submit" class="btn btn-primary py-3 px-5">Delete</button>
+          
+      </center>
+          </form>
 
   </div>
 </div>
